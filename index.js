@@ -15,18 +15,21 @@ app.get('/',(req,res)=>{
 
 app.get('/current-time',(req,res)=>{
      let today=format(new Date(),'dd-mm-yyyy-HH-mm-ss')
-     const filepath=`Timestamp/${today}.text`
+     const filepath=`Timestamp/${today}.txt`
      fs.writeFileSync(filepath,`${today}`,'utf8')
      let data=fs.readFileSync(filepath,'utf8')
-     res.status(200).json(data)  
+     res.status(200).json({currenttime:data})  
 })
-app.get('/all-time',(req,res) => {
-    const __Timestamp =fileURLToPath(import.meta.url)
-   const __dirname=path.dirname(__Timestamp)
-    const all = path.join(__dirname, 'Timestamp');
-    const alldata = fs.readdirSync(all,'utf8');
-    res.status(200).json(alldata);
-    
+app.get('/all-time', (req, res) => {
+    const __Timestamp = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__Timestamp);
+    const timestampDir = path.join(__dirname, 'Timestamp');
+    const allFiles = fs.readdirSync(timestampDir, 'utf8');
+    const allContents = allFiles.map((filename) => {
+        const filePath = path.join(timestampDir, filename);
+        return fs.readFileSync(filePath, 'utf8');
+    });
+    res.status(200).json({allTimestamp:allContents});
 });
 
 app.listen(PORT,()=>{
