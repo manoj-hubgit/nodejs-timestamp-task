@@ -10,7 +10,7 @@ const PORT=4000;
 app.use(express.json())
 
 app.get('/',(req,res)=>{
-    res.status(200).send("helloworld")
+    res.status(200).send("Use /current-time end point to know the current time. Use /all-time to retrive all time")
 })
 
 app.get('/current-time',(req,res)=>{
@@ -18,14 +18,14 @@ app.get('/current-time',(req,res)=>{
      const filepath=`Timestamp/${today}.text`
      fs.writeFileSync(filepath,`${today}`,'utf8')
      let data=fs.readFileSync(filepath,'utf8')
-     res.status(200).send(data)  
+     res.status(200).json(data)  
 })
 app.get('/all-time',(req,res) => {
     const __Timestamp =fileURLToPath(import.meta.url)
    const __dirname=path.dirname(__Timestamp)
     const all = path.join(__dirname, 'Timestamp');
     const alldata = fs.readdirSync(all,'utf8');
-    res.status(200).send(alldata);
+    res.status(200).json(alldata);
     
 });
 
