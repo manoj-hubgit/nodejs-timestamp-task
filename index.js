@@ -14,7 +14,8 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/current-time',(req,res)=>{
-     let today=format(new Date(),'dd-mm-yyyy-HH-mm-ss')
+    let currentTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+     let today=format(new Date(currentTime),'dd-mm-yyyy HH-mm-ss')
      const filepath=`Timestamp/${today}.txt`
      fs.writeFileSync(filepath,`${today}`,'utf8')
      let data=fs.readFileSync(filepath,'utf8')
